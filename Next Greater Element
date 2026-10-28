@@ -1,0 +1,103 @@
+Problem 2 — Next Greater Element
+Tier: Easy (Q1) | Marks: 20 | Topic: Stack / Monotonic
+
+Problem
+Given an array of integers, for each element find the next greater element to its right. If no greater element exists, output -1.
+
+Sample Input:
+
+arr = [4, 5, 2, 10, 8]
+Sample Output:
+
+[5, 10, 10, -1, -1]
+Constraints: 
+1
+≤
+N
+≤
+10
+5
+, 
+0
+≤
+a
+r
+r
+[
+i
+]
+≤
+10
+9
+.
+
+Key Insight
+Use a monotonic decreasing stack. Traverse right-to-left, maintaining a stack of candidates. For each element, pop elements from the stack that are ≤ current — they can never be the "next greater" for any element to the left.
+
+Approach
+Initialize result = [-1] * N and an empty stack.
+Traverse from right (i = N-1) to left (i = 0):
+Pop from stack while stack top ≤ arr[i].
+If stack is non-empty, result[i] = stack top.
+Push arr[i] onto stack.
+Return result.
+Complexity: 
+O
+(
+N
+)
+ time, 
+O
+(
+N
+)
+ space — each element pushed/popped at most once.
+
+
+solution 
+
+#include<iostream>
+#include<vector>
+#include<stack>
+using namespace std;
+
+class Solution{
+    public:
+    vector<int> next_greater_number_righ(vector<int>& nums){
+        stack<int> st;
+        vector<int> ans(nums.size(),-1);
+        
+        
+        for(int i=(int)nums.size()-1; i>=0;i--){
+            while(!st.empty() &&  st.top()<=nums[i] ){
+                st.pop();
+            }
+            
+            if(!st.empty()){
+                ans[i]=st.top();
+            }
+            st.push(nums[i]);
+            
+        }
+        return ans;
+    }
+};
+
+int main(){
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    
+    int n;
+    cin>>n;
+    
+    vector<int> nums(n);
+    for(int i= 0 ; i< n;i++){
+        cin>>nums[i];
+    }
+    
+    Solution obj;
+    vector<int> result = obj.next_greater_number_righ(nums);
+    for(int i=0;i<n;i++){
+        cout<<result[i]<<"   ";
+    }
+}
