@@ -1,0 +1,59 @@
+Given an array of 
+N
+ integers, rotate it to the right by 
+K
+ positions in-place using 
+O
+(
+1
+)
+ extra space.
+
+[using a extra array solution infosys / tcs ]
+
+#include<iostream>
+#include<vector>
+using namespace std;
+
+class Solution{
+    public:
+    
+    vector<int> rotate_array(vector<int> & nums , int k){
+        
+        vector<int> temp(nums.size());
+        
+         k = k%nums.size();
+        
+        for(int i=0;i<nums.size();i++){
+           int new_position = (i+k)%nums.size();
+           temp[new_position] = nums[i];
+            
+        }
+        nums= temp ;
+        return nums;
+        
+    }
+};
+
+int main() {
+   
+    
+    int n ;
+    cout<<"enter size of array ";
+    cin>> n;
+    int k ; 
+    cout<<"enter value of k ";
+    cin>>k;
+    
+    vector<int> rotate_array(n);
+    for(int i=0;i<n;i++){
+        cin>>rotate_array[i];
+    }
+    
+    Solution obj;
+    
+    vector<int> result = obj.rotate_array(rotate_array,k);
+    for(int i=0;i<n;i++){
+        cout<<result[i] <<"   ";
+    }
+}
