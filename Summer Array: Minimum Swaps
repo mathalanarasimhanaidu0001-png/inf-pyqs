@@ -1,0 +1,125 @@
+
+Problem
+Given an array of 
+N
+ distinct integers, find the minimum number of adjacent swaps required to sort the array in ascending order.
+
+Sample Input:
+
+arr = [3, 1, 2]
+Sample Output:
+
+2
+Explanation: Swaps: [3,1,2] → [1,3,2] → [1,2,3] = 2 swaps.
+
+Constraints: 
+1
+≤
+N
+≤
+10
+5
+, all elements distinct.
+
+
+SOLUTION IN TCS STYLE 
+
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+
+class Solution{
+    public:
+    
+    // Function to merge two sorted halves and count inversions
+    long long merge(vector<int> & arr , int left , int mid, int right ){
+        vector<int> temp;
+        
+        int i= left;
+        int j= mid+1;
+        
+        long long count = 0;
+        
+        while(i<= mid && j<= right){
+            if(arr[i] <= arr[j]){
+                temp.push_back(arr[i]);
+                 i++;
+            }
+            else{
+                temp.push_back(arr[j]);
+                count+=(mid-i+1); long long elements_remaining =(mid-i+1); // beginner alt   "count+=(mid-i+1) "
+                //count = elements_remaining + count;       
+                j++;
+            }
+        }
+    
+        // Copy remaining elements from left half
+    
+        while(i <= mid){
+           temp.push_back(arr[i]);
+           i++;
+        }
+    
+        // Copy remaining elements from right half
+        while(j <= right){
+            temp.push_back(arr[j]);
+            j++;
+        }
+        
+        // Copy sorted elements back into original array
+        int tempIndex = 0; // Starts at the beginning of your temporary array
+
+        for (int k = left; k <= right; k++) { // Moves from the start to the end of your original array section
+        arr[k] = temp[tempIndex];        // Copy the item cleanly
+        tempIndex++;                     // Move to the next item in temp
+        }
+        
+       // for( int k=0 ;k<right;k++){
+         //   arr[i]= temp[k- left];
+        // }
+          return count;
+    }    
+        
+    // function to divide the array and count inversions
+    long long mergeSort(vector<int> &arr , int left , int right){
+            
+        long long count = 0;
+        
+        if(left >= right){
+            return 0;
+            
+        }
+        
+        int mid = left + (right - left)/2;
+        
+         // Sort and count left half
+        count+= mergeSort(arr, left, mid); // beginner alt " long long left_inversion = mergesort(arr, left, mid ); "
+
+        // Sort and count right half
+        count+= mergeSort(arr, mid + 1, right); // beginner alt " long long right_inversion = mergesort( arr, mid+1 , right) ;"
+
+        // Merge both halves and count cross-inversions
+        count+= merge(arr, left, mid, right); // beginner alt " long long  cross_inversion = mergesort(arr,left,mid,right);"
+        
+        return count; // above beg alt " count = count + left_inv + rigth_inv + cross_inv ; "
+    }
+    
+};
+int main(){
+    
+    
+    int n ;
+    cout<<"enter size or array ";
+    cin>> n;
+    
+    vector<int> arr(n);
+    for(int i=0;i<n;i++){
+        cout<<"enter elements of array ";
+        cin>>arr[i];
+    }
+    
+    Solution obj;
+    int result = obj.mergeSort(arr, 0, n-1);
+    cout<<result;
+}
