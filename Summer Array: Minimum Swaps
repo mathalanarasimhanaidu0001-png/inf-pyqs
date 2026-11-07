@@ -48,7 +48,7 @@ class Solution{
             }
             else{
                 temp.push_back(arr[j]);
-                count+=(mid-i+1); long long elements_remaining =(mid-i+1); // beginner alt   "count+=(mid-i+1) "
+                long long elements_remaining =(mid-i+1); // beginner alt   "count+=(mid-i+1) "
                 //count = elements_remaining + count;       
                 j++;
             }
